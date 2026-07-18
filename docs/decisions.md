@@ -23,6 +23,213 @@ Decision / Context / Consequences / Reopen if
 
 ---
 
+## D-013: Adopt webai's design system with recorded deltas; wordmark and hero direction  (2026-07-18, status: accepted)
+
+**Decision:** The site adopts webai's `Design.md` token system wholesale —
+both-theme OKLCH color tokens, typography (Inter Variable + JetBrains Mono
+Variable, self-hosted, SIL OFL-1.1), spacing/radius/elevation/motion scales,
+and the AA accessibility contract — with the deltas recorded in
+[design-brief.md](design-brief.md): System-default theming (not webai's
+dark-first), a larger 16px-base landing-page type scale, no mascot (the hero
+is a **neon workshop skyline**), neon reserved for hero/card imagery and
+status badges instead of charts, and vanilla-JS theme toggle. The wordmark
+and page title are **"Patrick Meenan's Project Playground"**; the subheading's
+canonical intent (owner, verbatim): "Collection of tools and projects that I
+built for fun or for my own use that others may find useful (most, if not
+all, with the help of AI)."
+
+**Context:** Owner choices 2026-07-18 (hero motif, wordmark, subheading
+tone). webai's Design.md and `src/styles/global.css` were read 2026-07-18:
+they contain complete AA-validated token tables for both themes, including
+the light-theme accent derivations — so the light theme is a copy, not a
+research problem. Hero/card art follows webai's D-018 lesson: opaque
+per-theme renders, never naive color-keyed transparency.
+
+**Consequences:** M1 copies token values from webai rather than deriving
+them; drift between the two sites' foundations should be deliberate. The
+playful name coexists with the family's precise execution rules — the brief
+governs where they tension.
+
+**Reopen if:** the owner wants a distinct visual identity from webai, or the
+adopted tokens prove wrong for a content-light showcase page.
+
+## D-012: Toolchain: Astro 7 + pnpm + Biome/ESLint + Playwright; no framework, no Tailwind  (2026-07-18, status: accepted)
+
+**Decision:** Astro 7.x pinned exact at M1 install (no `^`), static output.
+pnpm via corepack, Node 24 LTS (`>=24 <25`). TypeScript strict via
+`astro check`. Biome for formatting; ESLint with `eslint-plugin-astro` for
+linting (webai's proven split). Playwright for the D-008 smoke test. **No UI
+framework integration** (no React) and **no Tailwind** — styling is plain CSS
+with semantic custom-property tokens and Astro scoped styles; the JS surface
+(sorting, theme toggle) is two small vanilla scripts (D-011). Fonts via
+`@fontsource-variable` packages. No Vitest — there is no unit-testable logic
+worth a second test runner; the Playwright smoke covers behavior. Deploy: a
+simplified version of webai's transactional script — build → rsync to a
+staging dir on `plex` → atomic swap into `/var/www/meenan.dev/www/` → curl
+smoke check → rollback on failure.
+
+**Context:** Verified 2026-07-18: Astro 7.0 shipped 2026-07-07 (Rust
+compiler, Vite 8; github.com/withastro/astro/releases), and the sibling webai
+repo pins Astro 7.1.1 / pnpm 11.14.0 / Node 24 / Biome 2.5.4 / ESLint 10 /
+Playwright 1.61.1 in production — current, in-family, known-good pins to
+start from. webai carries React+Tailwind because it is an app; this site is
+one server-rendered page, so both were dropped under the D-001 lightweight
+mandate. All named packages are MIT/ISC/OFL-class, satisfying D-003 (webai's
+audited dependency set).
+
+**Consequences:** Copying webai configs (biome.json, eslint.config.js,
+tsconfig, playwright.config.ts) is the M1 starting point, minus
+React/Tailwind pieces. `pnpm check` = format:check + lint + typecheck +
+build + smoke. No CI runs it (D-008) — agents run it before handoff.
+
+**Reopen if:** the site grows real component interactivity (revisit a
+framework island), or styling at token scale proves unwieldy in plain CSS
+(revisit Tailwind).
+
+## D-011: Sorting: vanilla script re-orders server-rendered cards; no persistence  (2026-07-18, status: accepted)
+
+**Decision:** Cards render fully at build time in default newest-first order
+(D-009). A small vanilla TypeScript module (a standard Astro `<script>`,
+bundled as an ES module) re-orders the existing card DOM nodes in place using
+`data-published` (ISO date) and `data-title` (normalized for locale-aware
+`localeCompare`) attributes when the sort control changes. No framework, no
+island, no hydration. The sort choice is **not persisted** — each visit opens
+newest-first; only the theme preference persists (D-010). With JavaScript
+disabled, the control is hidden and the default order stands.
+
+**Context:** M0 sorting spike, checked 2026-07-18 against current Astro docs
+(docs.astro.build/en/guides/client-side-scripts/): Astro `<script>` tags are
+processed/bundled as ES modules by default and plain vanilla JS manipulating
+server-rendered DOM is the documented pattern for exactly this class of
+interaction — no framework integration required. Persistence was considered
+and rejected: newest-first is the owner's chosen presentation, and a
+remembered sort adds state for negligible value on a four-card page.
+
+**Consequences:** The sort script and card markup share a small data-attribute
+contract — the architecture doc records it. Sorting is trivially covered by
+the Playwright smoke test (click "Title", assert order).
+
+**Reopen if:** the catalog grows enough that visitors plausibly return with a
+preferred ordering, or filtering (rejected in D-010) is revisited.
+
+## D-010: Page extras, header links, and SEO package; tag filter rejected  (2026-07-18, status: accepted)
+
+**Decision:** In scope: a styled 404 page; a footer (copyright, license note,
+"built with" line); a manual light/dark theme toggle (localStorage-persisted)
+on top of the automatic `prefers-color-scheme` default; and the full
+discoverability package — title/description meta, Open Graph/Twitter card
+with a share image, favicon, sitemap.xml, and robots.txt. Header profile
+links are: https://github.com/pmeenan, https://blog.patrickmeenan.com,
+https://x.com/patmeenan, https://bsky.app/profile/patmeenan.com. A
+technology-tag filter for the cards is **rejected** for launch.
+
+**Context:** Owner triage, 2026-07-18. The tag filter is premature with four
+projects; revisit if the catalog grows past roughly ten.
+
+**Consequences:** The OG share image joins the AI art pipeline (D-009). The
+theme toggle means the site ships a small amount of first-party JS beyond
+sorting; the toggle's stored override must win over the media query in both
+directions.
+
+**Reopen if:** the catalog grows enough that filtering earns its place, or a
+profile link changes.
+
+## D-009: Project catalog content: four launch projects, AI-generated card art and blurbs, status badges, newest-first default  (2026-07-18, status: accepted)
+
+**Decision:** Project entries live in the repo as a typed Astro content
+collection; each card shows an AI-generated image and short blurb (generated
+per project from its blog-post images and graphic assets), a status badge from
+a fixed set (Launched / Beta / In-Development), and optional links (site,
+GitHub, blog post). Cards default to newest-first by publish date; images are
+served through the Astro asset pipeline (responsive, modern formats). The
+launch catalog, as provided by the owner:
+
+| Project | Created | Status | Site | GitHub | Blog post | Local assets |
+| --- | --- | --- | --- | --- | --- | --- |
+| Waterfall-Tools | 2026-04-12 | Launched | https://waterfall-tools.com/ | https://github.com/pmeenan/waterfall-tools | https://blog.patrickmeenan.com/2026/04/12/introducing-waterfall-tools/ | `~/src/waterfall-tools/` |
+| Golemine | 2026-07-04 | Beta | https://golemine.com | https://github.com/pmeenan/golemine | — | `~/src/golemine/` |
+| Parallax-web | 2026-07-11 | In-Development | https://parallax-web.com/ | https://github.com/pmeenan/parallax | https://blog.patrickmeenan.com/2026/07/11/can-i-create-a-aaa-quality-game-with-ai-on-the-web-platform | `~/src/parallax/` |
+| webai | 2026-07-18 | In-Development | https://webai.meenan.dev/ | https://github.com/pmeenan/webai | — | `~/src/meenan.dev/webai/` |
+
+**Context:** Owner triage, 2026-07-18 — the catalog data above is verbatim
+from the owner. Golemine and webai have no blog post yet, which is why every
+card link is optional (D-004). The exact collection schema is drafted in the
+M0 architecture task from these fields.
+
+**Consequences:** Adding a project = adding one entry plus generating its
+image/blurb. Generated blurbs and images are content like any other — the
+owner reviews them before commit. The generation itself is a content-authoring
+step, not part of the build.
+
+**Reopen if:** the owner wants hand-written blurbs/photography for some
+project, or a status value outside the fixed set is needed.
+
+## D-008: Toolchain: check floor plus a Playwright smoke test; no CI, no license-audit automation  (2026-07-18, status: accepted)
+
+**Decision:** The check suite is format + lint + typecheck + build, plus a
+minimal Playwright smoke test (page renders, cards present, sorting works,
+both themes apply), all run locally before handoff. No GitHub Actions CI and
+no license-audit script — D-003 is enforced by convention (check each
+dependency's license when adding it). Deploys use a simplified version of
+webai's transactional build → rsync → smoke-check script.
+
+**Context:** Owner triage, 2026-07-18, applying the D-001 lightweight mandate.
+Offered CI, Playwright, and a license audit; the owner selected only the
+Playwright smoke test. Specific tool choices (Astro version, package manager,
+formatter/linter) are settled in the M0 toolchain task against current
+releases.
+
+**Consequences:** Agents run the checks themselves before declaring work
+review-ready (workflow.md) — there is no CI backstop. The smoke test is the
+only automated verification of the site's actual behaviors, so it must stay
+green and meaningful.
+
+**Reopen if:** manual checks prove unreliable in practice, or the dependency
+tree grows enough that hand-checking licenses stops being credible.
+
+## D-007: No client-side analytics; server logs only  (2026-07-18, status: accepted)
+
+**Decision:** The site ships no analytics or telemetry script of any kind.
+Visit insight comes from the nginx access logs on the owner's own server
+(optionally analyzed with a log tool), which requires nothing on the page.
+
+**Context:** Owner triage, 2026-07-18. Matches the sibling projects'
+no-telemetry posture while still giving visit counts, since the owner controls
+the host.
+
+**Consequences:** No third-party scripts, no cookies, no consent surface.
+Outbound-click data (which card links get used) is not available; accepting
+that is part of this decision.
+
+**Reopen if:** the owner wants click-through data that logs can't provide.
+
+## D-006: Design anchored on webai's "Neon horizon"; AI-generated hero art  (2026-07-18, status: accepted)
+
+**Decision:** The visual direction anchors on webai's "Neon horizon"
+(`webai/docs/design-brief.md`): near-black indigo canvas, cool
+periwinkle-tinted neutrals, a rare electric-cyan accent, with the neon set
+reserved for graphics — here, the hero and card imagery rather than chart
+data. The hero graphic is AI-generated art, consistent with the card-image
+pipeline (D-009). Family design rules carry over: semantic tokens, both
+themes AA-verified, quiet chrome, `prefers-reduced-motion` disables
+non-essential animation.
+
+**Context:** Owner triage, 2026-07-18, choosing among the family's directions
+(Neon horizon, golemine's "Lode", blog-aligned, or a new direction). Neon
+horizon fits the "graphical, futuristic, engaging" hero brief and makes the
+meenan.dev properties feel like one family. The webai brief was read
+2026-07-18; note its palette anchors are dark-theme anchors — this site also
+needs a first-class light theme derivation, which webai's M1 token work may
+already provide to borrow from.
+
+**Consequences:** The M0 design brief derives from webai's, not from scratch —
+reuse its token thinking where possible. Neon stays out of chrome and text;
+glow is bounded (hero and imagery only). Hero art must satisfy D-003
+licensing (owner-generated AI art does).
+
+**Reopen if:** the owner wants the front door visually distinct from webai, or
+the light-theme derivation proves unworkable against the Neon horizon anchors.
+
 ## D-005: Automatic dark/light theming; visual style aligned with the meenan.dev family  (2026-07-18, status: accepted)
 
 **Decision:** The site supports automatic dark and light themes driven by

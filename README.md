@@ -1,9 +1,10 @@
 # www.meenan.dev
 
-The landing page for [www.meenan.dev](https://www.meenan.dev/) — a catalog of
-Patrick Meenan's development projects as display cards (image, short
-description, and links to each project's website, GitHub repo, and blog post),
-sortable by publish date and title, with links to Patrick's profiles.
+**Patrick Meenan's Project Playground** — the landing page for
+[www.meenan.dev](https://www.meenan.dev/): a catalog of Patrick's development
+projects as display cards (image, short description, and links to each
+project's website, GitHub repo, and blog post), sortable by publish date and
+title, with links to Patrick's profiles.
 
 Key properties:
 
@@ -23,8 +24,9 @@ documentation, directed and reviewed by a human. Licensed under
 
 ## Status
 
-**Pre-code (milestone M0).** The plan, feature matrix, design direction, and
-architecture are being worked out; no application code exists yet. See
+**Pre-code; planning complete (M0 done).** Scope, design direction, content
+model, toolchain, and milestones are settled; no application code exists yet.
+Next up: M1 — toolchain, shell, and first deploy. See
 [docs/plan.md](docs/plan.md).
 
 ## Start here

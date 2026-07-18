@@ -1,4 +1,4 @@
-# www.meenan.dev — Patrick Meenan's project catalog landing page
+# www.meenan.dev — "Patrick Meenan's Project Playground" landing page
 
 A simple, polished static landing page cataloging Patrick's development projects
 as display cards (image, short description, links to the live site, GitHub repo,
@@ -31,14 +31,17 @@ affected docs. Until then, these govern.
   sibling meenan.dev repos. Check the license of every new dependency before
   adding it. (D-003)
 - **Both themes, automatically.** Automatic dark/light mode driven by
-  `prefers-color-scheme`; every page state must be built and verified in both
-  themes, AA contrast minimum. Visual style aligns with the golemine / parallax
+  `prefers-color-scheme` plus a manual override toggle; every page state must
+  be built and verified in both themes, AA contrast minimum. Visual style is
+  anchored on webai's "Neon horizon" direction within the golemine / parallax
   / webai / blog.patrickmeenan.com family: professional developer-tool polish,
-  quiet chrome, disciplined accent use. (D-005)
-- **Single landing page, minimal JavaScript.** One page: header with profile
-  links, graphical hero + subheading, and a project-card grid sortable by
-  publish date and title. Client JS is limited to what the page needs (sorting,
-  theme handling); no client framework unless a decision says otherwise. (D-004)
+  quiet chrome, disciplined accent use. (D-005, D-006, D-010)
+- **Single landing page, minimal JavaScript.** One page (plus a styled 404):
+  header with profile links, graphical hero + subheading, and a project-card
+  grid sortable by publish date and title. First-party JS is limited to
+  sorting and theme handling; no client framework unless a decision says
+  otherwise, and no third-party scripts at all — analytics is server-logs-only
+  (D-007). (D-004)
 
 ## Repository layout
 
@@ -61,6 +64,7 @@ this project's lightweight-variant note.
 | [docs/features.md](docs/features.md) | The feature matrix: confirmed scope, proposed additions, open questions |
 | [docs/architecture.md](docs/architecture.md) | Site structure, content model, build/deploy constraints |
 | [docs/decisions.md](docs/decisions.md) | Settled choices (D-NNN). Scan headings; read only the entries your task touches |
+| [docs/design-brief.md](docs/design-brief.md) | Look-and-feel: adopted webai tokens + deltas, hero/card/badge direction, copy, UI definition of done |
 | [docs/rough-edges.md](docs/rough-edges.md) | Findings log (RE-NNN). Grep before adding a finding or debugging weirdness |
 
 ## Rules for all agents
@@ -98,8 +102,8 @@ this project's lightweight-variant note.
 
 ## Current status
 
-Milestone **M0 (plan the plan)** — feature triage, design direction, content
-model, and the milestone ladder are being settled through planning
-conversations. See [docs/plan.md](docs/plan.md). No application code exists
-yet; Astro scaffolding is M1. Keep this paragraph current when plan.md
+**M0 (plan the plan) is complete** — scope, design direction, content model,
+toolchain, and the M1–M4 ladder are settled (D-001..D-013). No application
+code exists yet; the next milestone is **M1 (toolchain, shell, and deploy)** —
+see [docs/plan.md](docs/plan.md). Keep this paragraph current when plan.md
 milestone status changes (rule 5).

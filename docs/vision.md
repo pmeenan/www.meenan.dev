@@ -4,7 +4,8 @@
 
 Patrick Meenan builds developer tools and experiments (golemine, parallax,
 WebAI, and more) that today have no single front door — each lives at its own
-URL or repo. www.meenan.dev is that front door: a single, polished landing page
+URL or repo. www.meenan.dev — **"Patrick Meenan's Project Playground"**
+(D-013) — is that front door: a single, polished landing page
 that catalogs the projects as display cards — image, short description, and
 links to the live site, the GitHub repo, and the blog post about it — plus a
 graphical hero header, a one-line subheading explaining the site, and links to
@@ -46,6 +47,8 @@ intentionally minimal.
 
 - **No backend, accounts, or dynamic serving** — it is a static site by
   decision (D-002); anything requiring a server is out.
+- **No client-side analytics or third-party scripts** — visit insight comes
+  from the server's access logs (D-007).
 - **No multi-page content (for now)** — project detail pages, an about page, or
   hosted blog content are out of scope until a decision says otherwise; the
   blog stays at blog.patrickmeenan.com.
