@@ -106,4 +106,4 @@ this project's lightweight-variant note.
 
 ## Current status
 
-**M2 (Landing page structure) is complete** — wordmark, profile links with inline SVG icons, theme-switched optimized hero illustrations, refined footer, and E2E verification are live in the workspace. The next milestone is **M3 (Project cards)** — see [docs/plan.md](docs/plan.md). Keep this paragraph current when plan.md milestone status changes (rule 5).
+**M3 (Project cards) is complete** — two project cards with working client-side sorting, responsive cards and status badges, and E2E verification are live in the workspace. The next milestone is **M4 (Full content, polish, and launch)** — see [docs/plan.md](docs/plan.md). Keep this paragraph current when plan.md milestone status changes (rule 5).

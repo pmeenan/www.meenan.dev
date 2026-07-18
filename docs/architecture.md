@@ -55,17 +55,20 @@ const projects = defineCollection({
       blurb: z.string().max(280),        // AI-generated, owner-reviewed
       image: image(),                    // through the Astro asset pipeline
       imageAlt: z.string().default(""),  // decorative by default
+      imagePosition: z.string().default("center"), // 16:9 card crop focus
       links: z.object({
-        site: z.string().url().optional(),
-        github: z.string().url().optional(),
-        blog: z.string().url().optional(),
+        site: z.url().optional(),
+        github: z.url().optional(),
+        blog: z.url().optional(),
       }),
     }),
 });
 ```
 
 The launch catalog is the four projects in D-009. Adding a project = one JSON
-entry + one image; the build fails on schema violations.
+entry + one card image + its site favicon (`pnpm scrape-favicons`, keyed by the
+JSON filename); the build fails on schema violations. `ProjectCard` resolves the
+favicon by glob, so no component edit is needed per project.
 
 ## Client behaviors — the only two scripts
 

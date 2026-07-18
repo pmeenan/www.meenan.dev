@@ -16,6 +16,8 @@
     "format": "biome format --write .",
     "format:check": "biome format .",
     "test:e2e": "playwright test",
+    "scrape-favicons": "node ./scripts/scrape-favicons.js",
+    "generate-favicon": "node ./scripts/generate-favicon.js",
     "check": "corepack pnpm format:check && corepack pnpm lint && corepack pnpm typecheck && corepack pnpm test:e2e",
     "deploy": "corepack pnpm build && ./scripts/deploy.sh"
   },

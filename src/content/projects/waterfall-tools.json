@@ -1,0 +1,13 @@
+{
+  "title": "Waterfall Tools",
+  "published": "2026-04-12",
+  "status": "launched",
+  "blurb": "A fast, zero-bloat browser and Node.js library that normalizes various trace formats (PCAP, HAR, Netlog, Chrome Trace) and renders interactive waterfall charts using HTML5 canvas.",
+  "image": "../../assets/projects/waterfall-tools.png",
+  "imageAlt": "Interactive network waterfall visualization showing loading sequence",
+  "links": {
+    "site": "https://waterfall-tools.com/",
+    "github": "https://github.com/pmeenan/waterfall-tools",
+    "blog": "https://blog.patrickmeenan.com/2026/04/12/introducing-waterfall-tools/"
+  }
+}

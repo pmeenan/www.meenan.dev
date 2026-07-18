@@ -1,0 +1,134 @@
+---
+import { getCollection } from "astro:content";
+import ProjectCard from "./ProjectCard.astro";
+
+const projects = await getCollection("projects");
+
+// Default sort: newest first
+projects.sort((a, b) => b.data.published.getTime() - a.data.published.getTime());
+---
+
+<section class="project-grid-section" aria-label="Projects Showcase">
+  <div class="grid-header">
+    <h2 class="grid-title">Projects</h2>
+    
+    <div id="sort-controls" hidden class="sort-controls">
+      <span class="sort-label">Sort by:</span>
+      <div class="segmented-control" role="group" aria-label="Sorting criteria">
+        <button
+          type="button"
+          class="sort-btn active"
+          data-sort="newest"
+          aria-pressed="true"
+        >
+          Newest
+        </button>
+        <button
+          type="button"
+          class="sort-btn"
+          data-sort="title"
+          aria-pressed="false"
+        >
+          Project
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-grid-cards">
+    {projects.map((project) => (
+      <ProjectCard project={project} />
+    ))}
+  </div>
+</section>
+
+<script>
+  import "../scripts/sort.ts";
+</script>
+
+<style>
+  .project-grid-section {
+    width: min(100%, var(--content-max));
+    margin-inline: auto;
+    padding-inline: var(--space-4);
+    padding-block: var(--space-12) var(--space-16);
+  }
+
+  .grid-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-end: var(--space-8);
+  }
+
+  .grid-title {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-lg);
+    font-weight: var(--weight-bold);
+    color: var(--text);
+    margin: 0;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .sort-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .sort-controls[hidden] {
+    display: none;
+  }
+
+  .sort-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+  }
+
+  .segmented-control {
+    display: inline-flex;
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius-control);
+    padding: var(--space-0-5);
+  }
+
+  .sort-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-sm);
+    font-weight: var(--weight-medium);
+    padding: var(--space-1-5) var(--space-4);
+    border-radius: calc(var(--radius-control) - var(--space-0-5));
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .sort-btn:hover {
+    color: var(--text);
+  }
+
+  .sort-btn.active {
+    background: var(--accent);
+    color: var(--accent-foreground);
+    font-weight: var(--weight-semibold);
+  }
+
+  .project-grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 48rem) {
+    .project-grid-section {
+      padding-inline: var(--space-6);
+    }
+  }
+</style>

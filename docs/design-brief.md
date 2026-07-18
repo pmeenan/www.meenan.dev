@@ -100,15 +100,16 @@ fringes — use opaque per-theme WebP composed on/near the theme background,
 presented as a bounded illustration; never naive transparency). Dark and
 light variants are separate generations/gradings, not filters. Decorative
 (`alt=""`); copy carries the meaning; quiet space reserved for the H1 +
-subheading. Target ≤ ~350 KiB for the pair at 2x. Generation masters stay
-out of the repo.
+subheading. Target ≤ ~350 KiB shipped for the pair at 2x. Generation masters
+may live in the repo but never ship as-is; only the Astro-optimized derivatives
+are served (D-017).
 
 ### Project cards
 
 - Card = `--surface` on `--bg`, 8px radius, resting shadow, hairline
   `--border`; hover lifts to `--surface-raised` + floating shadow (transform/
   opacity only; disabled under reduced motion).
-- Content top-to-bottom: generated image (fixed aspect ratio, ~16:9,
+- Content top-to-bottom: generated image (16:9, the card's display ratio;
   Astro-optimized), title (Inter 600), status badge, blurb (2–3 lines),
   link row.
 - **Status badges** (D-009 value set) map to status tokens: Launched →
@@ -121,6 +122,16 @@ out of the repo.
 - Card images follow the hero rule: per-theme opaque variants only if the art
   needs it; otherwise one image that sits acceptably on both themes inside
   the card's own surface.
+- **Generate card art at the card's aspect ratio (16:9).** Request the image at
+  the ratio the card actually renders, which is fixed by the `<Image>`
+  `width:height` and the wrapper's `aspect-ratio` (currently 480:270 = 16:9), so
+  the subject is composed and positioned correctly at generation time and no
+  cropping is needed. If a generator can't produce 16:9 exactly, use its nearest
+  ratio and recover the framing with the entry's `imagePosition` (D-009 schema),
+  which cover-crops a non-16:9 master toward the named edge. Prefer regenerating
+  at 16:9 over leaning on the crop: a square master loses ~40% of its height to
+  the center-crop (the golemine card is a square master currently salvaged with
+  `imagePosition: "top"`, and should be regenerated at 16:9 when convenient).
 
 ### Sort control
 

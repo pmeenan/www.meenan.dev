@@ -119,3 +119,103 @@ test("renders 404 page correctly", async ({ page }) => {
   await page.goto("./404/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Page Not Found");
 });
+
+test("renders exactly 2 project cards with correct contents", async ({ page }) => {
+  await page.goto("./");
+
+  const cards = page.locator(".project-card");
+  await expect(cards).toHaveCount(2);
+
+  // Assert Waterfall Tools details
+  const wtCard = cards.filter({ hasText: "Waterfall Tools" });
+  await expect(wtCard).toBeVisible();
+  await expect(wtCard.locator(".status-badge")).toHaveText("Launched");
+  await expect(wtCard.locator(".card-blurb")).toContainText(
+    "A fast, zero-bloat browser and Node.js library",
+  );
+  await expect(
+    wtCard.locator('a[aria-label="Visit Waterfall Tools live website"]'),
+  ).toHaveAttribute("href", "https://waterfall-tools.com/");
+  await expect(
+    wtCard.locator('a[aria-label="View Waterfall Tools source on GitHub"]'),
+  ).toHaveAttribute("href", "https://github.com/pmeenan/waterfall-tools");
+  await expect(
+    wtCard.locator('a[aria-label="Read blog post about Waterfall Tools"]'),
+  ).toHaveAttribute(
+    "href",
+    "https://blog.patrickmeenan.com/2026/04/12/introducing-waterfall-tools/",
+  );
+
+  // Assert Golemine details
+  const golemCard = cards.filter({ hasText: "Golemine" });
+  await expect(golemCard).toBeVisible();
+  await expect(golemCard.locator(".status-badge")).toHaveText("Beta");
+  await expect(golemCard.locator(".card-blurb")).toContainText(
+    "A secure, browser-based iTunes and Finder backup explorer",
+  );
+  await expect(golemCard.locator('a[aria-label="Visit Golemine live website"]')).toHaveAttribute(
+    "href",
+    "https://golemine.com",
+  );
+  await expect(golemCard.locator('a[aria-label="View Golemine source on GitHub"]')).toHaveAttribute(
+    "href",
+    "https://github.com/pmeenan/golemine",
+  );
+  // Golemine does not have a blog link; verify it is omitted
+  await expect(golemCard.locator('a[aria-label^="Read blog post"]')).toHaveCount(0);
+});
+
+test("sort controls are hidden when JS is disabled", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto("./");
+  const sortControls = page.locator("#sort-controls");
+  await expect(sortControls).toBeHidden();
+  await context.close();
+});
+
+test("sort controls are visible and toggle active states when JS is enabled", async ({ page }) => {
+  await page.goto("./");
+
+  const sortControls = page.locator("#sort-controls");
+  await expect(sortControls).toBeVisible();
+
+  const newestBtn = page.locator('.sort-btn[data-sort="newest"]');
+  const titleBtn = page.locator('.sort-btn[data-sort="title"]');
+
+  // Default active state should be newest-first
+  await expect(newestBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(newestBtn).toHaveClass(/active/);
+  await expect(titleBtn).toHaveAttribute("aria-pressed", "false");
+  await expect(titleBtn).not.toHaveClass(/active/);
+
+  // Default card order (newest first): Golemine, then Waterfall Tools
+  const cardTitles = page.locator(".project-card .card-title");
+  await expect(cardTitles.nth(0)).toHaveText("Golemine");
+  await expect(cardTitles.nth(1)).toHaveText("Waterfall Tools");
+
+  // Click "Project" sorting button
+  await titleBtn.click();
+  await expect(titleBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(titleBtn).toHaveClass(/active/);
+  await expect(newestBtn).toHaveAttribute("aria-pressed", "false");
+  await expect(newestBtn).not.toHaveClass(/active/);
+
+  // Alphabetical (A-Z) order for Golemine (G) and Waterfall Tools (W) is also Golemine, then Waterfall Tools
+  await expect(cardTitles.nth(0)).toHaveText("Golemine");
+  await expect(cardTitles.nth(1)).toHaveText("Waterfall Tools");
+
+  // Go back to newest
+  await newestBtn.click();
+  await expect(newestBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(newestBtn).toHaveClass(/active/);
+});
+
+test("renders correct favicon link tags in the head", async ({ page }) => {
+  await page.goto("./");
+  const svgFavicon = page.locator('link[rel="icon"][type="image/svg+xml"]');
+  await expect(svgFavicon).toHaveAttribute("href", "/favicon.svg");
+
+  const icoFavicon = page.locator('link[rel="icon"][sizes="any"]');
+  await expect(icoFavicon).toHaveAttribute("href", "/favicon.ico");
+});

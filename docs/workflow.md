@@ -127,3 +127,17 @@ against the current working tree.
 - **Report a per-finding verdict:** `fix verified` · `fix incomplete or wrong (with
   evidence)` · `pushback accepted` · `pushback rejected (why the finding stands)`.
   All-positive is a valid result — don't manufacture disputes.
+
+## Updating project favicons
+
+As part of the project catalog maintenance (e.g. when adding new projects in M4 or when external sites change their favicons), the site favicons are scraped directly from their live URLs to ensure visual accuracy and keep local copies.
+
+To update the local favicons in the workspace, run:
+```bash
+corepack pnpm scrape-favicons
+```
+This runs the script at `scripts/scrape-favicons.js` which:
+1. Crawls each project's live site URL.
+2. Locates and extracts the favicon URL from the HTML link tags, supporting relative paths, nested quotes, and inline SVG data URIs.
+3. Downloads the icon and automatically optimizes/resizes large raster favicons (like PNG or JPG) down to a compact 32x32 pixel format using `sharp` to keep page load times fast.
+4. Overwrites the assets in `src/assets/projects/` and cleans up any old format files.

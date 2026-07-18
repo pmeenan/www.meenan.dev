@@ -83,21 +83,21 @@ art and copy in both themes; hero image pair within the ~350 KiB budget; all
 four profile links correct; AA spot-checks pass on header/hero/footer text;
 smoke green.
 
-## M3 — Project cards  `pending`
+## M3 — Project cards  `done` (2026-07-18)
 
 Goal: the catalog works end-to-end.
 
-- [ ] Content collection (`content.config.ts` + JSON entries) per the
+- [x] Content collection (`content.config.ts` + JSON entries) per the
       architecture schema, seeded with two projects.
-- [ ] Generate card image + blurb for those two projects from their local
+- [x] Generate card image + blurb for those two projects from their local
       assets and blog posts (D-009 pipeline), owner-reviewed.
-- [ ] `ProjectCard.astro` (image, title, status badge, blurb, link row) and
+- [x] `ProjectCard.astro` (image, title, status badge, blurb, link row) and
       `ProjectGrid.astro` with the sort control.
-- [ ] `sort.ts` per D-011; control hidden without JS.
-- [ ] Extend the smoke test: card count, title-sort re-orders the grid,
+- [x] `sort.ts` per D-011; control hidden without JS.
+- [x] Extend the smoke test: card count, title-sort re-orders the grid,
       badge/link presence.
 
-**Exit criteria:** two real cards live with working sort (newest default,
+**Exit criteria: met 2026-07-18** — two real cards live with working sort (newest default,
 title A–Z) and no reload; page fully readable with JS disabled in default
 order; both themes AA on card surfaces; smoke green.
 
@@ -105,8 +105,9 @@ order; both themes AA on card surfaces; smoke green.
 
 Goal: all four projects, discoverable, accessible, launched.
 
-- [ ] Remaining two project entries with generated images/blurbs,
-      owner-reviewed (full D-009 catalog).
+- [ ] Remaining two project entries with generated images/blurbs (card art
+      generated at 16:9 per the design brief), owner-reviewed (full D-009
+      catalog).
 - [ ] SEO package: meta description, OG/Twitter tags + generated share image,
       favicon (SVG + ICO), `@astrojs/sitemap`, robots.txt (D-010).
 - [ ] Accessibility pass per the design-brief definition of done: keyboard

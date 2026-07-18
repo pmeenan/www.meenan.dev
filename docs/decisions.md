@@ -21,6 +21,18 @@ Format:
 Decision / Context / Consequences / Reopen if
 ```
 
+## D-017: Generation masters may live in the repo, but only optimized derivatives ship  (2026-07-18, status: accepted; reverses the design-brief "masters stay out of the repo" rule)
+
+**Decision:** AI-generation masters (the full-resolution source renders, e.g. the 1024² hero and card art) may be committed under `src/assets/`, on the condition that the built site never serves a master as-is. Only the Astro asset pipeline's optimized, resized derivatives (WebP at display dimensions) ship. A master that no page references is never emitted; a referenced master is served only through `<Image>`/`getImage()` optimization, never linked raw. This reverses the design-brief line "Generation masters stay out of the repo."
+
+**Context:** Owner decision, 2026-07-18, during M3 review. The card sources (`golemine.png` 955 KiB, `waterfall-tools.png` 510 KiB, both 1024²) and the M2 hero art (`hero-*.jpg`, 1024² ~900 KiB) are committed masters, so practice and the written rule had diverged. The owner prefers keeping masters in-repo (one durable home for the source art, re-croppable later) and constraining only what ships. Measured this session: the served card images are 36 KiB / 4.8 KiB WebP and the hero pair is 339 KiB WebP, so the ≤~350 KiB shipped budget is unaffected because masters are never served.
+
+**Consequences:** The repo carries full-resolution art (MB-scale) as the durable source; page weight stays governed only by the optimized output the build produces. Art can be re-cropped or re-graded from the in-repo master (see the golemine card re-crop via `<Image position>`, D-009 pipeline) without re-generating. The design-brief hero section is updated to state the shipped-budget rule and drop "masters stay out of the repo."
+
+**Reopen if:** repo size from masters becomes a problem (move masters to external storage or Git LFS), or a master is ever needed directly in shipped HTML.
+
+---
+
 ## D-016: Hero theme art via CSS background-image, not dual `<Image>` tags  (2026-07-18, status: accepted)
 
 **Decision:** The hero renders each theme's art as a CSS `background-image` on a single `.hero-bg` element, scoped by `:global([data-theme="dark"|"light"])`. The optimized webp URLs are produced at build with `astro:assets` `getImage()` and injected into the scoped styles via `define:vars`.
