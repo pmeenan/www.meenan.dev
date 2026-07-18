@@ -66,16 +66,16 @@ https://www.meenan.dev/ rendering correctly in dark, light, and system with
 a working persisted toggle and no theme flash; deploy script rolls back on a
 forced smoke failure (tested once); AGENTS.md layout table updated.
 
-## M2 — Landing page structure  `pending`
+## M2 — Landing page structure  `done` (2026-07-18)
 
 Goal: the full page minus the cards.
 
-- [ ] Header: wordmark, profile links (D-010 URLs) with inline SVG icons,
+- [x] Header: wordmark, profile links (D-010 URLs) with inline SVG icons,
       theme toggle placement.
-- [ ] Hero: generate the neon workshop skyline art (dark + light opaque
+- [x] Hero: generate the neon workshop skyline art (dark + light opaque
       renders per the design brief), H1, subheading copy for owner review.
-- [ ] Footer per the design brief; styled 404 page.
-- [ ] Extend the smoke test: header links present, hero renders in both
+- [x] Footer per the design brief; styled 404 page.
+- [x] Extend the smoke test: header links present, hero renders in both
       themes, 404 served.
 
 **Exit criteria:** page structure live-deployable with owner-approved hero

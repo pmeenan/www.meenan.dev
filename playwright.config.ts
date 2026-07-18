@@ -10,12 +10,12 @@ export default defineConfig({
   ...(isCI ? { workers: 1 } : {}),
   reporter: isCI ? "github" : "list",
   use: {
-    baseURL: "http://127.0.0.1:4321/",
+    baseURL: "http://127.0.0.1:4322/",
     trace: "on-first-retry",
   },
   webServer: {
-    command: "corepack pnpm build && corepack pnpm preview --host 127.0.0.1",
-    url: "http://127.0.0.1:4321/",
+    command: "corepack pnpm build && corepack pnpm preview --host 127.0.0.1 --port 4322",
+    url: "http://127.0.0.1:4322/",
     reuseExistingServer: !isCI,
   },
   projects: [

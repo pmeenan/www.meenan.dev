@@ -67,12 +67,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <footer class="site-footer">
       <div class="footer-inner">
-        <p>&copy; {new Date().getFullYear()} Patrick Meenan</p>
-        <p>
-          Licensed under <a href="/LICENSE.txt" class="footer-link">Apache-2.0</a>
-        </p>
-        <p>
-          Built with Astro, by AI agents under human direction.
+        <p class="footer-text">
+          <span>&copy; {new Date().getFullYear()} Patrick Meenan</span>
+          <span class="separator" aria-hidden="true">&middot;</span>
+          <span>
+            Licensed under <a href="/LICENSE.txt" class="footer-link">Apache-2.0</a>
+          </span>
+          <span class="separator" aria-hidden="true">&middot;</span>
+          <span>
+            Built with Astro, by AI agents under human direction.
+          </span>
         </p>
       </div>
     </footer>
@@ -80,6 +84,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 </html>
 
 <style>
+  .footer-inner {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .footer-text {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2) var(--space-3);
+    margin: 0;
+  }
+
   .footer-link {
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -88,5 +106,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   
   .footer-link:hover {
     color: var(--accent);
+  }
+
+  .separator {
+    color: var(--text-disabled);
+    user-select: none;
+  }
+
+  @media (max-width: 48rem) {
+    .footer-text {
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+    .separator {
+      display: none;
+    }
   }
 </style>

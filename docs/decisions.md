@@ -21,6 +21,28 @@ Format:
 Decision / Context / Consequences / Reopen if
 ```
 
+## D-016: Hero theme art via CSS background-image, not dual `<Image>` tags  (2026-07-18, status: accepted)
+
+**Decision:** The hero renders each theme's art as a CSS `background-image` on a single `.hero-bg` element, scoped by `:global([data-theme="dark"|"light"])`. The optimized webp URLs are produced at build with `astro:assets` `getImage()` and injected into the scoped styles via `define:vars`.
+
+**Context:** The first M2 implementation used two `<Image>` tags (dark + light) swapped with CSS `display:none`, both `loading="eager"`. A `display:none` `<img>` is still downloaded by browsers, so every visitor fetched ~150-185KB of off-theme art they never see (RE-003). Theme is dual-controlled (OS `prefers-color-scheme` plus a manual toggle that writes `data-theme`), which rules out a `<picture media="(prefers-color-scheme...)">` because that ignores the manual override. The pre-paint inline script in `Base.astro` always resolves `data-theme` to `dark` or `light` before first paint, so a `[data-theme]`-scoped `background-image` computes to exactly one URL on the rendered element and only that image is fetched. Measured after the change: a single hero webp is the computed background per theme, verified by an E2E assertion on `getComputedStyle().backgroundImage`.
+
+**Consequences:** Roughly halves hero image transfer (one image instead of two) with no theme flash. Trade-off: drops `<Image>`'s responsive `srcset` for a single 1024px webp, acceptable because the art sits under an 0.88-opacity scrim as a subtle blueprint and the source is only 1024px square. Relies on `sharp` at build time (already a pinned dependency).
+
+**Reopen if:** the hero art becomes prominent/unscrimmed and needs a responsive `srcset` per viewport, or the manual theme toggle is dropped (then `<picture>` + `prefers-color-scheme` becomes viable).
+
+---
+
+## D-015: Playwright runs E2E tests on custom port 4322 to prevent sibling port conflicts  (2026-07-18, status: accepted)
+
+**Decision:** Playwright config is updated to use port `4322` for E2E tests (baseURL and webServer preview port).
+
+**Context:** The default Astro port is `4321`. When sibling projects in the meenan.dev family (such as `webai`) are running local dev servers, Playwright's `reuseExistingServer: !isCI` setting mistakenly connects to the running sibling server instead of spinning up this site's built output, leading to confusing test failures (e.g., asserting the wrong H1 heading text).
+
+**Consequences:** E2E tests are insulated from sibling workspace processes. No manual server shutdown is required before testing.
+
+**Reopen if:** we need to coordinate ports across all local projects systematically.
+
 ---
 
 ## D-014: Plain rsync deploy — no staging, symlink swap, or rollback  (2026-07-18, status: accepted)

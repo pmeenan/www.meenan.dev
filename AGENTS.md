@@ -102,7 +102,8 @@ this project's lightweight-variant note.
 9. **Scratch files stay out of the tree.** Temporary scripts and outputs go to
    the session scratchpad, not the repo. Delete throw-away diagnostics before
    concluding.
+10. **No em-dashes in user-facing content.** Do not use em-dashes (`—` or `&mdash;`) in user-facing text, page titles, or UI labels. Use parentheses, colons, commas, or hyphens instead to maintain a natural human tone.
 
 ## Current status
 
-**M1 (toolchain, shell, and deploy) is complete** — pinned toolchain (Astro 7, TS strict, Biome, ESLint, Playwright), theme variables, Base layout, accessible theme toggle, and deploy scripts are verified and live in the workspace. The next milestone is **M2 (Landing page structure)** — see [docs/plan.md](docs/plan.md). Keep this paragraph current when plan.md milestone status changes (rule 5).
+**M2 (Landing page structure) is complete** — wordmark, profile links with inline SVG icons, theme-switched optimized hero illustrations, refined footer, and E2E verification are live in the workspace. The next milestone is **M3 (Project cards)** — see [docs/plan.md](docs/plan.md). Keep this paragraph current when plan.md milestone status changes (rule 5).

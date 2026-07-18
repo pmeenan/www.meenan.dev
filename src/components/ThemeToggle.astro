@@ -4,19 +4,44 @@
 <fieldset class="theme-toggle" aria-label="Theme preference">
   <legend class="visually-hidden">Select a visual theme</legend>
   
-  <label class="theme-option">
+  <label class="theme-option" title="Light theme">
     <input type="radio" name="theme-preference" value="light" class="visually-hidden" />
-    <span class="theme-label">Light</span>
+    <span class="theme-label">
+      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="theme-icon" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2" />
+        <path d="M12 20v2" />
+        <path d="M4.93 4.93l1.41 1.41" />
+        <path d="M17.66 17.66l1.41 1.41" />
+        <path d="M2 12h2" />
+        <path d="M20 12h2" />
+        <path d="M6.34 17.66l-1.41 1.41" />
+        <path d="M19.07 4.93l-1.41 1.41" />
+      </svg>
+      <span class="visually-hidden">Light</span>
+    </span>
   </label>
   
-  <label class="theme-option">
+  <label class="theme-option" title="Use system preference">
     <input type="radio" name="theme-preference" value="system" class="visually-hidden" />
-    <span class="theme-label">System</span>
+    <span class="theme-label">
+      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="theme-icon" aria-hidden="true">
+        <rect width="20" height="14" x="2" y="3" rx="2" />
+        <line x1="8" x2="16" y1="21" y2="21" />
+        <line x1="12" x2="12" y1="17" y2="21" />
+      </svg>
+      <span class="visually-hidden">System</span>
+    </span>
   </label>
   
-  <label class="theme-option">
+  <label class="theme-option" title="Dark theme">
     <input type="radio" name="theme-preference" value="dark" class="visually-hidden" />
-    <span class="theme-label">Dark</span>
+    <span class="theme-label">
+      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="theme-icon" aria-hidden="true">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      </svg>
+      <span class="visually-hidden">Dark</span>
+    </span>
   </label>
 </fieldset>
 
@@ -33,18 +58,17 @@
   .theme-option {
     position: relative;
     cursor: pointer;
+    display: inline-flex;
   }
 
   .theme-label {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 1.75rem;
     height: 1.75rem;
-    padding-inline: var(--space-3);
     border-radius: calc(var(--radius-control) - 2px);
     color: var(--text-secondary);
-    font-size: var(--font-size-xs);
-    font-weight: var(--weight-medium);
     transition:
       color var(--duration-fast) var(--ease-standard),
       background-color var(--duration-fast) var(--ease-standard);
@@ -54,7 +78,6 @@
   .theme-option input:checked + .theme-label {
     background: var(--accent);
     color: var(--accent-foreground);
-    font-weight: var(--weight-semibold);
   }
 
   .theme-option:hover .theme-label {
@@ -71,8 +94,8 @@
       padding: var(--space-1);
     }
     .theme-label {
+      width: 2.25rem;
       height: 2.25rem;
-      padding-inline: var(--space-4);
     }
   }
 </style>

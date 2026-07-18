@@ -1,0 +1,122 @@
+---
+import { getImage } from "astro:assets";
+import heroDark from "../assets/hero-dark.jpg";
+import heroLight from "../assets/hero-light.jpg";
+
+// Render the per-theme art as CSS background-image scoped by [data-theme] so the
+// browser downloads only the active theme's image. Two <img> tags (even
+// display:none) both download; astro:assets can't runtime-select a theme, and
+// the manual toggle rules out prefers-color-scheme <picture>. See D-016 / RE-003.
+const [heroDarkImg, heroLightImg] = await Promise.all([
+  getImage({ src: heroDark, format: "webp", width: 1024 }),
+  getImage({ src: heroLight, format: "webp", width: 1024 }),
+]);
+---
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-scrim"></div>
+  <div class="hero-content">
+    <h1 class="hero-title visually-hidden">Patrick Meenan's Project Playground</h1>
+    <p class="hero-subtitle">
+      Tools and projects I built for fun or my own use that you might find useful (most of them with the help of AI).
+    </p>
+  </div>
+</section>
+
+<style define:vars={{ heroDarkUrl: `url(${heroDarkImg.src})`, heroLightUrl: `url(${heroLightImg.src})` }}>
+  .hero {
+    position: relative;
+    width: 100%;
+    padding-block: var(--space-16) var(--space-20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-block-end: var(--border-width) solid var(--border);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center 30%;
+  }
+
+  /* The pre-paint theme script always resolves data-theme to dark or light
+     before first paint, so exactly one background-image ever computes on the
+     rendered element and only that one is fetched. */
+  :global([data-theme="dark"]) .hero-bg {
+    background-image: var(--heroDarkUrl);
+  }
+  :global([data-theme="light"]) .hero-bg {
+    background-image: var(--heroLightUrl);
+  }
+
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: var(--bg);
+    /* High opacity so the image behind it is a very subtle blueprint style */
+    opacity: 0.88;
+  }
+
+  /* Fade out slightly towards the bottom for a smooth merge into the content area */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    height: var(--space-12);
+    background: linear-gradient(to bottom, transparent, var(--bg));
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: var(--prose-max);
+    padding-inline: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-xl);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-heading);
+    margin: 0;
+    color: var(--text);
+  }
+
+  .hero-subtitle {
+    font-size: var(--font-size-base);
+    line-height: var(--line-base);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .hero {
+      padding-block: var(--space-20) var(--space-24);
+    }
+
+    .hero-title {
+      font-size: var(--font-size-3xl);
+      line-height: var(--line-3xl);
+    }
+
+    .hero-subtitle {
+      font-size: var(--font-size-md);
+      line-height: var(--line-md);
+    }
+  }
+</style>
