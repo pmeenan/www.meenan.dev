@@ -122,16 +122,16 @@ are served (D-017).
 - Card images follow the hero rule: per-theme opaque variants only if the art
   needs it; otherwise one image that sits acceptably on both themes inside
   the card's own surface.
+- **Card images MUST use the assets and art direction from the project itself (e.g., from its README, blog post, or actual screenshots) rather than inheriting the site's default "Neon Horizon" theme.**
 - **Generate card art at the card's aspect ratio (16:9).** Request the image at
   the ratio the card actually renders, which is fixed by the `<Image>`
   `width:height` and the wrapper's `aspect-ratio` (currently 480:270 = 16:9), so
   the subject is composed and positioned correctly at generation time and no
-  cropping is needed. If a generator can't produce 16:9 exactly, use its nearest
+  cropping is needed. **When generating images using AI tools, explicitly require letterboxing when you need 16:9 images, and then manually crop them yourself using an image manipulation script.** If a generator can't produce 16:9 exactly, use its nearest
   ratio and recover the framing with the entry's `imagePosition` (D-009 schema),
   which cover-crops a non-16:9 master toward the named edge. Prefer regenerating
   at 16:9 over leaning on the crop: a square master loses ~40% of its height to
-  the center-crop (the golemine card is a square master currently salvaged with
-  `imagePosition: "top"`, and should be regenerated at 16:9 when convenient).
+  the center-crop.
 
 ### Sort control
 

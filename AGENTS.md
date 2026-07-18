@@ -106,4 +106,4 @@ this project's lightweight-variant note.
 
 ## Current status
 
-**M3 (Project cards) is complete** — two project cards with working client-side sorting, responsive cards and status badges, and E2E verification are live in the workspace. The next milestone is **M4 (Full content, polish, and launch)** — see [docs/plan.md](docs/plan.md). Keep this paragraph current when plan.md milestone status changes (rule 5).
+**M4 (Full content, polish, and launch) is complete** — all four project cards (Waterfall Tools, Golemine, Parallax-web, WebAI) are live with their corresponding 16:9 aspect ratio graphics, site map integration, meta tags, and robots.txt. All local quality gates and Playwright E2E tests are passing. The site is ready for production deployment.

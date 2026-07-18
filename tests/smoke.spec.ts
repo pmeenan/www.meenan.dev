@@ -120,11 +120,11 @@ test("renders 404 page correctly", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Page Not Found");
 });
 
-test("renders exactly 2 project cards with correct contents", async ({ page }) => {
+test("renders exactly 4 project cards with correct contents", async ({ page }) => {
   await page.goto("./");
 
   const cards = page.locator(".project-card");
-  await expect(cards).toHaveCount(2);
+  await expect(cards).toHaveCount(4);
 
   // Assert Waterfall Tools details
   const wtCard = cards.filter({ hasText: "Waterfall Tools" });
@@ -161,8 +161,48 @@ test("renders exactly 2 project cards with correct contents", async ({ page }) =
     "href",
     "https://github.com/pmeenan/golemine",
   );
-  // Golemine does not have a blog link; verify it is omitted
-  await expect(golemCard.locator('a[aria-label^="Read blog post"]')).toHaveCount(0);
+  await expect(golemCard.locator('a[aria-label="Read blog post about Golemine"]')).toHaveAttribute(
+    "href",
+    "https://blog.patrickmeenan.com/2026/07/18/golemine/",
+  );
+
+  // Assert Parallax-web details
+  const parallaxCard = cards.filter({ hasText: "Parallax-web" });
+  await expect(parallaxCard).toBeVisible();
+  await expect(parallaxCard.locator(".status-badge")).toHaveText("In Development");
+  await expect(parallaxCard.locator(".card-blurb")).toContainText(
+    "An open-world game experiment and web-platform research vehicle",
+  );
+  await expect(
+    parallaxCard.locator('a[aria-label="Visit Parallax-web live website"]'),
+  ).toHaveAttribute("href", "https://parallax-web.com/");
+  await expect(
+    parallaxCard.locator('a[aria-label="View Parallax-web source on GitHub"]'),
+  ).toHaveAttribute("href", "https://github.com/pmeenan/parallax");
+  await expect(
+    parallaxCard.locator('a[aria-label="Read blog post about Parallax-web"]'),
+  ).toHaveAttribute(
+    "href",
+    "https://blog.patrickmeenan.com/2026/07/11/can-i-create-a-aaa-quality-game-with-ai-on-the-web-platform",
+  );
+
+  // Assert WebAI details
+  const webaiCard = cards.filter({ hasText: "WebAI" });
+  await expect(webaiCard).toBeVisible();
+  await expect(webaiCard.locator(".status-badge")).toHaveText("In Development");
+  await expect(webaiCard.locator(".card-blurb")).toContainText(
+    "A fully client-side workbench for LLMs in the browser",
+  );
+  await expect(webaiCard.locator('a[aria-label="Visit WebAI live website"]')).toHaveAttribute(
+    "href",
+    "https://webai.meenan.dev/",
+  );
+  await expect(webaiCard.locator('a[aria-label="View WebAI source on GitHub"]')).toHaveAttribute(
+    "href",
+    "https://github.com/pmeenan/webai",
+  );
+  // WebAI does not have a blog link; verify it is omitted
+  await expect(webaiCard.locator('a[aria-label^="Read blog post"]')).toHaveCount(0);
 });
 
 test("sort controls are hidden when JS is disabled", async ({ browser }) => {
@@ -189,21 +229,25 @@ test("sort controls are visible and toggle active states when JS is enabled", as
   await expect(titleBtn).toHaveAttribute("aria-pressed", "false");
   await expect(titleBtn).not.toHaveClass(/active/);
 
-  // Default card order (newest first): Golemine, then Waterfall Tools
+  // Default card order (newest first): WebAI, Parallax-web, Golemine, Waterfall Tools
   const cardTitles = page.locator(".project-card .card-title");
-  await expect(cardTitles.nth(0)).toHaveText("Golemine");
-  await expect(cardTitles.nth(1)).toHaveText("Waterfall Tools");
+  await expect(cardTitles.nth(0)).toHaveText("WebAI");
+  await expect(cardTitles.nth(1)).toHaveText("Parallax-web");
+  await expect(cardTitles.nth(2)).toHaveText("Golemine");
+  await expect(cardTitles.nth(3)).toHaveText("Waterfall Tools");
 
-  // Click "Project" sorting button
+  // Click "Project" sorting button (alphabetical A-Z)
   await titleBtn.click();
   await expect(titleBtn).toHaveAttribute("aria-pressed", "true");
   await expect(titleBtn).toHaveClass(/active/);
   await expect(newestBtn).toHaveAttribute("aria-pressed", "false");
   await expect(newestBtn).not.toHaveClass(/active/);
 
-  // Alphabetical (A-Z) order for Golemine (G) and Waterfall Tools (W) is also Golemine, then Waterfall Tools
+  // Alphabetical (A-Z) order: Golemine, Parallax-web, Waterfall Tools, WebAI
   await expect(cardTitles.nth(0)).toHaveText("Golemine");
-  await expect(cardTitles.nth(1)).toHaveText("Waterfall Tools");
+  await expect(cardTitles.nth(1)).toHaveText("Parallax-web");
+  await expect(cardTitles.nth(2)).toHaveText("Waterfall Tools");
+  await expect(cardTitles.nth(3)).toHaveText("WebAI");
 
   // Go back to newest
   await newestBtn.click();

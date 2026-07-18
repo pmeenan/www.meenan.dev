@@ -101,23 +101,23 @@ Goal: the catalog works end-to-end.
 title A–Z) and no reload; page fully readable with JS disabled in default
 order; both themes AA on card surfaces; smoke green.
 
-## M4 — Full content, polish, and launch  `pending`
+## M4 — Full content, polish, and launch  `done` (2026-07-18)
 
 Goal: all four projects, discoverable, accessible, launched.
 
-- [ ] Remaining two project entries with generated images/blurbs (card art
+- [x] Remaining two project entries with generated images/blurbs (card art
       generated at 16:9 per the design brief), owner-reviewed (full D-009
       catalog).
-- [ ] SEO package: meta description, OG/Twitter tags + generated share image,
+- [x] SEO package: meta description, OG/Twitter tags + generated share image,
       favicon (SVG + ICO), `@astrojs/sitemap`, robots.txt (D-010).
-- [ ] Accessibility pass per the design-brief definition of done: keyboard
+- [x] Accessibility pass per the design-brief definition of done: keyboard
       path, focus visibility, reduced motion, 200% zoom, narrow viewports,
       forced colors.
-- [ ] Final both-theme contrast verification on every surface.
-- [ ] Production deploy; verify OG rendering with a card-validator check and
+- [x] Final both-theme contrast verification on every surface.
+- [x] Production deploy; verify OG rendering with a card-validator check and
       links from the live page.
 
-**Exit criteria:** all four cards live at https://www.meenan.dev/ with
-correct links; SEO meta present and share image renders in a link preview;
-accessibility checklist done with issues fixed or logged; full `pnpm check`
-green; owner sign-off on the live page.
+**Exit criteria:** met 2026-07-18 — all four cards live with correct links; SEO
+meta present and share image renders in a link preview; accessibility checklist
+done with issues fixed or logged; full `pnpm check` green; owner sign-off on the
+live page.

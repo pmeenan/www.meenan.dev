@@ -5,9 +5,9 @@
   "blurb": "A secure, browser-based iTunes and Finder backup explorer that lets you decrypt, search, and export iOS text messages and attachments entirely locally with no server uploads.",
   "image": "../../assets/projects/golemine.png",
   "imageAlt": "Bronze automaton golem mining through neon blue data streams",
-  "imagePosition": "top",
   "links": {
     "site": "https://golemine.com",
-    "github": "https://github.com/pmeenan/golemine"
+    "github": "https://github.com/pmeenan/golemine",
+    "blog": "https://blog.patrickmeenan.com/2026/07/18/golemine/"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "title": "Parallax-web",
+  "published": "2026-07-11",
+  "status": "in-development",
+  "blurb": "An open-world game experiment and web-platform research vehicle running client-side with WebGPU, WASM threads, SharedArrayBuffer workers, and Chrome's built-in AI Prompt API.",
+  "image": "../../assets/projects/parallax-web.png",
+  "imageAlt": "Near-photorealistic 4K view of a seaside village with a castle on a nearby hill, farmland, forests, and distant mountains. High fantasy open-world action RPG setting.",
+  "links": {
+    "site": "https://parallax-web.com/",
+    "github": "https://github.com/pmeenan/parallax",
+    "blog": "https://blog.patrickmeenan.com/2026/07/11/can-i-create-a-aaa-quality-game-with-ai-on-the-web-platform"
+  }
+}

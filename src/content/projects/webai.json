@@ -1,0 +1,12 @@
+{
+  "title": "WebAI",
+  "published": "2026-07-18",
+  "status": "in-development",
+  "blurb": "A fully client-side workbench for LLMs in the browser, allowing developers to chat, benchmark, and compare Hugging Face models using WebGPU, WebNN, WASM, and Chrome's Prompt API.",
+  "image": "../../assets/projects/webai.png",
+  "imageAlt": "Technical dashboard UI displaying model benchmarks and neural network graphs in neon cyan and purple",
+  "links": {
+    "site": "https://webai.meenan.dev/",
+    "github": "https://github.com/pmeenan/webai"
+  }
+}
