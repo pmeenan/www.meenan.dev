@@ -43,25 +43,25 @@ features.md `proposed` row resolved and all open questions answered
 (D-006..D-013); design brief exists; architecture.md first draft written;
 toolchain decided; M1–M4 have scopes and exit criteria.
 
-## M1 — Toolchain, shell, and deploy  `pending`
+## M1 — Toolchain, shell, and deploy  `done` (2026-07-18)
 
 Goal: a deployed, themed, empty-but-real page — proving the riskiest
 substrate (tokens, theming, deploy path) with the smallest real page.
 
-- [ ] Scaffold the Astro 7 project per D-012 (pnpm, exact pins, TS strict,
+- [x] Scaffold the Astro 7 project per D-012 (pnpm, exact pins, TS strict,
       Biome + ESLint, Playwright), starting from webai's configs minus
       React/Tailwind. Update the AGENTS.md repository-layout table.
-- [ ] `src/styles/tokens.css` from webai's values + design-brief deltas
+- [x] `src/styles/tokens.css` from webai's values + design-brief deltas
       (16px base scale, `--neon-*`); fonts self-hosted with OFL texts in
       `public/licenses/`.
-- [ ] `Base.astro` layout: head meta, theme pre-paint script, three-state
+- [x] `Base.astro` layout: head meta, theme pre-paint script, three-state
       theme toggle, header/footer skeleton.
-- [ ] Playwright smoke test v1: page renders, both themes apply, toggle
+- [x] Playwright smoke test v1: page renders, both themes apply, toggle
       persists across reload, no pre-paint flash.
-- [ ] `scripts/deploy.sh` (stage → swap → curl smoke → rollback) and a first
+- [x] `scripts/deploy.sh` (stage → swap → curl smoke → rollback) and a first
       placeholder deploy to https://www.meenan.dev/.
 
-**Exit criteria:** `pnpm check` green locally; placeholder page live at
+**Exit criteria: met 2026-07-18** — `pnpm check` green locally; placeholder page live at
 https://www.meenan.dev/ rendering correctly in dark, light, and system with
 a working persisted toggle and no theme flash; deploy script rolls back on a
 forced smoke failure (tested once); AGENTS.md layout table updated.

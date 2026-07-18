@@ -34,7 +34,7 @@ src/
   assets/                  hero art (dark/light), card images, OG image
 public/
   favicon.svg / .ico, robots.txt, licenses/ (font OFL texts)
-scripts/deploy.sh          build → stage → swap → smoke → rollback (D-012)
+scripts/deploy.sh          rsync dist/ into the live docroot (D-014)
 tests/smoke.spec.ts        Playwright smoke (D-008)
 ```
 
@@ -100,17 +100,19 @@ generated share image in `src/assets/`. `@astrojs/sitemap` (single-URL
 sitemap) + static `robots.txt`. Favicon: SVG (theme-aware via
 `prefers-color-scheme` inside the SVG) with an ICO fallback.
 
-## Checks & deploy (D-008, D-012)
+## Checks & deploy (D-008, D-012, D-014)
 
 `pnpm check` = `format:check` (Biome) + `lint` (ESLint) + `typecheck`
 (`astro check`) + `build` + `test:e2e` (Playwright smoke: page renders, four
 cards, title-sort re-orders, both themes apply without flash). Run locally
 before every handoff — there is no CI.
 
-`scripts/deploy.sh` (simplified from webai's): local build → rsync `dist/` to
-a staging dir under `/var/www/meenan.dev/` on `plex` → atomic swap with the
-live `www/` dir → curl smoke against https://www.meenan.dev/ → swap back on
-failure. Deploys are owner-initiated.
+`scripts/deploy.sh` rsyncs `dist/` straight into the live docroot
+`plex:/var/www/meenan.dev/www/` with `--delete` (D-014), matching the other
+meenan.dev sites. No staging, symlink swap, or rollback: this is a low-volume
+personal page on a LAN host, so git is the recovery path if a deploy goes bad.
+A build-missing guard keeps `--delete` from wiping the site. Deploys are
+owner-initiated (`pnpm deploy` builds first).
 
 ## Open architecture questions
 

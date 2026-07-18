@@ -45,11 +45,14 @@ affected docs. Until then, these govern.
 
 ## Repository layout
 
-| Path    | What lives there |
-| ------- | ---------------- |
+| Path | What lives there |
+| --- | --- |
 | `docs/` | Vision, plan, architecture, decisions, features, rough edges, workflow |
-
-The Astro scaffolding lands in M1 — update this table when it does.
+| `src/` | Application source code (components, layouts, pages, styles) |
+| `public/` | Static assets, favicons, and third-party license text files |
+| `scripts/` | Deploy script (`deploy.sh` — rsync `dist/` to the live docroot) |
+| `tests/` | Playwright E2E smoke tests |
+| Config files | Astro, TS, Biome, ESLint, and Playwright settings at workspace root |
 
 ## Doc map — pull what the task needs, not everything
 
@@ -102,8 +105,4 @@ this project's lightweight-variant note.
 
 ## Current status
 
-**M0 (plan the plan) is complete** — scope, design direction, content model,
-toolchain, and the M1–M4 ladder are settled (D-001..D-013). No application
-code exists yet; the next milestone is **M1 (toolchain, shell, and deploy)** —
-see [docs/plan.md](docs/plan.md). Keep this paragraph current when plan.md
-milestone status changes (rule 5).
+**M1 (toolchain, shell, and deploy) is complete** — pinned toolchain (Astro 7, TS strict, Biome, ESLint, Playwright), theme variables, Base layout, accessible theme toggle, and deploy scripts are verified and live in the workspace. The next milestone is **M2 (Landing page structure)** — see [docs/plan.md](docs/plan.md). Keep this paragraph current when plan.md milestone status changes (rule 5).

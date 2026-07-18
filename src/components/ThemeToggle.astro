@@ -1,0 +1,129 @@
+---
+---
+
+<fieldset class="theme-toggle" aria-label="Theme preference">
+  <legend class="visually-hidden">Select a visual theme</legend>
+  
+  <label class="theme-option">
+    <input type="radio" name="theme-preference" value="light" class="visually-hidden" />
+    <span class="theme-label">Light</span>
+  </label>
+  
+  <label class="theme-option">
+    <input type="radio" name="theme-preference" value="system" class="visually-hidden" />
+    <span class="theme-label">System</span>
+  </label>
+  
+  <label class="theme-option">
+    <input type="radio" name="theme-preference" value="dark" class="visually-hidden" />
+    <span class="theme-label">Dark</span>
+  </label>
+</fieldset>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    padding: var(--space-0-5);
+    margin: var(--space-0);
+    border: var(--border-width) solid var(--control-border);
+    border-radius: var(--radius-control);
+    background: var(--surface);
+  }
+
+  .theme-option {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .theme-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.75rem;
+    padding-inline: var(--space-3);
+    border-radius: calc(var(--radius-control) - 2px);
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--weight-medium);
+    transition:
+      color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+    user-select: none;
+  }
+
+  .theme-option input:checked + .theme-label {
+    background: var(--accent);
+    color: var(--accent-foreground);
+    font-weight: var(--weight-semibold);
+  }
+
+  .theme-option:hover .theme-label {
+    color: var(--text);
+  }
+
+  .theme-option input:focus-visible + .theme-label {
+    outline: var(--focus-width) solid var(--focus-ring);
+    outline-offset: 1px;
+  }
+
+  @media (pointer: coarse) {
+    .theme-toggle {
+      padding: var(--space-1);
+    }
+    .theme-label {
+      height: 2.25rem;
+      padding-inline: var(--space-4);
+    }
+  }
+</style>
+
+<script>
+  function initThemeToggle() {
+    const key = 'meenan-theme';
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[name="theme-preference"]');
+    
+    // Get current preference, default to 'system'
+    const stored = localStorage.getItem(key);
+    const initialPreference = (stored === 'light' || stored === 'dark' || stored === 'system') ? stored : 'system';
+
+    // Update radio buttons to match preference
+    inputs.forEach(input => {
+      if (input.value === initialPreference) {
+        input.checked = true;
+      }
+    });
+
+    function applyTheme(preference: 'light' | 'dark' | 'system') {
+      let theme: 'light' | 'dark';
+      if (preference === 'system') {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      } else {
+        theme = preference;
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.style.colorScheme = theme;
+    }
+
+    // Set listener on preferences changes
+    inputs.forEach(input => {
+      input.addEventListener('change', () => {
+        const val = input.value as 'light' | 'dark' | 'system';
+        localStorage.setItem(key, val);
+        applyTheme(val);
+      });
+    });
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      const currentStored = localStorage.getItem(key);
+      if (!currentStored || currentStored === 'system') {
+        const theme = e.matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      }
+    });
+  }
+
+  // Run on page load
+  initThemeToggle();
+</script>

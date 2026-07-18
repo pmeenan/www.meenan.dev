@@ -1,0 +1,75 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Page Not Found — Patrick Meenan's Project Playground">
+  <div class="error-container">
+    <span class="error-code">404</span>
+    <h1 class="error-title">Page Not Found</h1>
+    <p class="error-message">
+      The page you are looking for doesn't exist or has been moved.
+    </p>
+    <a href="/" class="home-link">Return Home</a>
+  </div>
+</Base>
+
+<style>
+  .error-container {
+    max-width: var(--prose-max);
+    margin-inline: auto;
+    padding-block: var(--space-12) var(--space-16);
+    text-align: center;
+  }
+
+  .error-code {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-3xl);
+    font-weight: var(--weight-bold);
+    color: var(--accent);
+    margin-block-end: var(--space-2);
+  }
+
+  .error-title {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-xl);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-heading);
+    margin-block-end: var(--space-4);
+  }
+
+  .error-message {
+    font-size: var(--font-size-md);
+    line-height: var(--line-md);
+    color: var(--text-secondary);
+    margin-block-end: var(--space-8);
+  }
+
+  .home-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--control-default);
+    padding-inline: var(--space-4);
+    border: var(--border-width) solid var(--control-border);
+    border-radius: var(--radius-control);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: var(--weight-semibold);
+    transition:
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .home-link:hover {
+    border-color: var(--accent);
+    background: var(--surface-raised);
+  }
+
+  @media (pointer: coarse) {
+    .home-link {
+      min-height: var(--target-coarse);
+    }
+  }
+</style>

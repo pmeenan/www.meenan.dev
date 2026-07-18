@@ -23,6 +23,37 @@ Decision / Context / Consequences / Reopen if
 
 ---
 
+## D-014: Plain rsync deploy — no staging, symlink swap, or rollback  (2026-07-18, status: accepted)
+
+**Decision:** `scripts/deploy.sh` deploys by rsyncing `dist/` directly into the
+live docroot `plex:/var/www/meenan.dev/www/` with `--delete` and a guard that
+refuses to run when `dist/index.html` is missing (so a failed build can't let
+`--delete` wipe the live site). No staging directory, no atomic symlink swap,
+no curl smoke check, no rollback, and no `deploy-remote.sh`. This supersedes
+the transactional deploy mechanism described in D-002, D-008, and D-012.
+
+**Context:** Owner decision, 2026-07-18. The M1 implementation had grown into a
+~410-line two-script transaction (coprocess two-phase commit, `renameat2` via
+Python, durable fsync'd state, crash recovery, fault injection) — well beyond
+what D-002/D-008/D-012 asked for, and a review found two real bugs in it (an
+asset-check `set -e` abort logged as RE-001, plus a prune path-canonicalization
+footgun). The owner's other hosted sites deploy with a single rsync (e.g.
+waterfall-tools: `rsync -av --delete dist/ plex:/var/www/<site>/`).
+www.meenan.dev is a very low-volume personal page on a LAN server, so the
+atomicity a symlink swap buys (no mixed-state window mid-sync) and rollback
+(git is the recovery path) are both judged not worth the complexity or the bug
+surface.
+
+**Consequences:** Deploy is one rsync; `deploy-remote.sh` is deleted and plex
+no longer carries release dirs, `.www-previous`, or a deploy lock — `www/` is a
+plain directory. A deploy briefly serves a mixed old/new state while rsync
+runs; accepted for this site. A broken deploy is fixed by rebuilding from git
+and re-running `pnpm deploy`. Avoiding concurrent deploys is the owner's
+responsibility (single operator).
+
+**Reopen if:** the site starts taking real traffic, or a deploy's mixed-state
+window or the lack of rollback causes an actual problem.
+
 ## D-013: Adopt webai's design system with recorded deltas; wordmark and hero direction  (2026-07-18, status: accepted)
 
 **Decision:** The site adopts webai's `Design.md` token system wholesale —
@@ -53,7 +84,7 @@ governs where they tension.
 **Reopen if:** the owner wants a distinct visual identity from webai, or the
 adopted tokens prove wrong for a content-light showcase page.
 
-## D-012: Toolchain: Astro 7 + pnpm + Biome/ESLint + Playwright; no framework, no Tailwind  (2026-07-18, status: accepted)
+## D-012: Toolchain: Astro 7 + pnpm + Biome/ESLint + Playwright; no framework, no Tailwind  (2026-07-18, status: accepted; deploy mechanism amended by D-014)
 
 **Decision:** Astro 7.x pinned exact at M1 install (no `^`), static output.
 pnpm via corepack, Node 24 LTS (`>=24 <25`). TypeScript strict via
@@ -164,7 +195,7 @@ step, not part of the build.
 **Reopen if:** the owner wants hand-written blurbs/photography for some
 project, or a status value outside the fixed set is needed.
 
-## D-008: Toolchain: check floor plus a Playwright smoke test; no CI, no license-audit automation  (2026-07-18, status: accepted)
+## D-008: Toolchain: check floor plus a Playwright smoke test; no CI, no license-audit automation  (2026-07-18, status: accepted; deploy mechanism amended by D-014)
 
 **Decision:** The check suite is format + lint + typecheck + build, plus a
 minimal Playwright smoke test (page renders, cards present, sorting works,
@@ -296,7 +327,7 @@ question 7).
 **Reopen if:** the owner changes the repo license or wants an exception for a
 specific asset.
 
-## D-002: Static Astro site, rsync-deployed to www.meenan.dev  (2026-07-18, status: accepted)
+## D-002: Static Astro site, rsync-deployed to www.meenan.dev  (2026-07-18, status: accepted; deploy mechanism amended by D-014)
 
 **Decision:** The site is built with Astro as a fully static site (SSG) and
 deployed by rsync to `plex:/var/www/meenan.dev/www/`, served at

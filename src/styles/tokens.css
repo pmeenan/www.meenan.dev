@@ -1,0 +1,268 @@
+:root {
+  /* Default Theme: Dark Mode values */
+  color-scheme: dark;
+  --bg: oklch(0.18 0.02 270);
+  --surface: oklch(0.225 0.03 270);
+  --surface-raised: oklch(0.27 0.035 270);
+  --text: oklch(0.88 0.045 275);
+  --text-secondary: oklch(0.72 0.045 275);
+  --text-muted: oklch(0.65 0.04 275);
+  --text-disabled: oklch(0.5 0.03 275);
+  --border: oklch(0.34 0.055 268);
+  --border-strong: oklch(0.42 0.06 268);
+  --control-border: oklch(0.55 0.06 268);
+  --accent: oklch(0.78 0.14 232);
+  --accent-hover: oklch(0.83 0.14 232);
+  --accent-active: oklch(0.72 0.14 232);
+  --accent-foreground: oklch(0.17 0.02 270);
+  --focus-ring: oklch(0.78 0.14 232);
+  --selection: oklch(0.32 0.08 232);
+  --success: oklch(0.75 0.165 145);
+  --success-soft: oklch(0.25 0.05 145);
+  --warning: oklch(0.82 0.145 85);
+  --warning-soft: oklch(0.26 0.05 85);
+  --danger: oklch(0.7 0.205 28);
+  --danger-soft: oklch(0.25 0.06 28);
+  --info: oklch(0.72 0.175 255);
+  --info-soft: oklch(0.25 0.06 255);
+  --on-status: oklch(0.17 0.02 270);
+
+  /* Neon Palette (renamed from chart-* in webai) */
+  --neon-cyan: oklch(0.78 0.155 220);
+  --neon-blue: oklch(0.68 0.205 260);
+  --neon-violet: oklch(0.7 0.205 300);
+  --neon-magenta: oklch(0.72 0.225 335);
+  --neon-green: oklch(0.75 0.165 145);
+  --neon-amber: oklch(0.82 0.145 85);
+
+  --scrim: oklch(0.05 0.01 270 / 72%);
+  --shadow-color: oklch(0.05 0.01 270);
+  --shadow-1: 0 1px 2px oklch(0.05 0.01 270 / 45%);
+  --shadow-2: 0 8px 24px oklch(0.05 0.01 270 / 50%);
+  --shadow-3: 0 16px 48px oklch(0.05 0.01 270 / 58%);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --bg: oklch(0.98 0.008 264);
+    --surface: oklch(1 0 0);
+    --surface-raised: oklch(0.95 0.015 264);
+    --text: oklch(0.25 0.035 264);
+    --text-secondary: oklch(0.38 0.04 264);
+    --text-muted: oklch(0.46 0.035 264);
+    --text-disabled: oklch(0.64 0.03 264);
+    --border: oklch(0.84 0.03 264);
+    --border-strong: oklch(0.72 0.045 264);
+    --control-border: oklch(0.58 0.06 264);
+    --accent: oklch(0.48 0.135 225);
+    --accent-hover: oklch(0.43 0.135 225);
+    --accent-active: oklch(0.38 0.12 225);
+    --accent-foreground: oklch(0.99 0.005 264);
+    --focus-ring: oklch(0.46 0.155 225);
+    --selection: oklch(0.88 0.06 225);
+    --success: oklch(0.45 0.135 145);
+    --success-soft: oklch(0.93 0.04 145);
+    --warning: oklch(0.48 0.13 65);
+    --warning-soft: oklch(0.93 0.04 75);
+    --danger: oklch(0.5 0.185 28);
+    --danger-soft: oklch(0.93 0.045 28);
+    --info: oklch(0.46 0.17 255);
+    --info-soft: oklch(0.93 0.045 255);
+    --on-status: oklch(0.99 0.005 264);
+
+    --neon-cyan: oklch(0.48 0.135 225);
+    --neon-blue: oklch(0.5 0.205 260);
+    --neon-violet: oklch(0.49 0.2 300);
+    --neon-magenta: oklch(0.5 0.205 335);
+    --neon-green: oklch(0.45 0.135 145);
+    --neon-amber: oklch(0.48 0.13 65);
+
+    --scrim: oklch(0.15 0.02 264 / 42%);
+    --shadow-color: oklch(0.2 0.02 264);
+    --shadow-1: 0 1px 2px oklch(0.2 0.02 264 / 12%);
+    --shadow-2: 0 8px 24px oklch(0.2 0.02 264 / 16%);
+    --shadow-3: 0 16px 48px oklch(0.2 0.02 264 / 20%);
+  }
+}
+
+/* Explicit theme overrides */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: oklch(0.18 0.02 270);
+  --surface: oklch(0.225 0.03 270);
+  --surface-raised: oklch(0.27 0.035 270);
+  --text: oklch(0.88 0.045 275);
+  --text-secondary: oklch(0.72 0.045 275);
+  --text-muted: oklch(0.65 0.04 275);
+  --text-disabled: oklch(0.5 0.03 275);
+  --border: oklch(0.34 0.055 268);
+  --border-strong: oklch(0.42 0.06 268);
+  --control-border: oklch(0.55 0.06 268);
+  --accent: oklch(0.78 0.14 232);
+  --accent-hover: oklch(0.83 0.14 232);
+  --accent-active: oklch(0.72 0.14 232);
+  --accent-foreground: oklch(0.17 0.02 270);
+  --focus-ring: oklch(0.78 0.14 232);
+  --selection: oklch(0.32 0.08 232);
+  --success: oklch(0.75 0.165 145);
+  --success-soft: oklch(0.25 0.05 145);
+  --warning: oklch(0.82 0.145 85);
+  --warning-soft: oklch(0.26 0.05 85);
+  --danger: oklch(0.7 0.205 28);
+  --danger-soft: oklch(0.25 0.06 28);
+  --info: oklch(0.72 0.175 255);
+  --info-soft: oklch(0.25 0.06 255);
+  --on-status: oklch(0.17 0.02 270);
+
+  --neon-cyan: oklch(0.78 0.155 220);
+  --neon-blue: oklch(0.68 0.205 260);
+  --neon-violet: oklch(0.7 0.205 300);
+  --neon-magenta: oklch(0.72 0.225 335);
+  --neon-green: oklch(0.75 0.165 145);
+  --neon-amber: oklch(0.82 0.145 85);
+
+  --scrim: oklch(0.05 0.01 270 / 72%);
+  --shadow-color: oklch(0.05 0.01 270);
+  --shadow-1: 0 1px 2px oklch(0.05 0.01 270 / 45%);
+  --shadow-2: 0 8px 24px oklch(0.05 0.01 270 / 50%);
+  --shadow-3: 0 16px 48px oklch(0.05 0.01 270 / 58%);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: oklch(0.98 0.008 264);
+  --surface: oklch(1 0 0);
+  --surface-raised: oklch(0.95 0.015 264);
+  --text: oklch(0.25 0.035 264);
+  --text-secondary: oklch(0.38 0.04 264);
+  --text-muted: oklch(0.46 0.035 264);
+  --text-disabled: oklch(0.64 0.03 264);
+  --border: oklch(0.84 0.03 264);
+  --border-strong: oklch(0.72 0.045 264);
+  --control-border: oklch(0.58 0.06 264);
+  --accent: oklch(0.48 0.135 225);
+  --accent-hover: oklch(0.43 0.135 225);
+  --accent-active: oklch(0.38 0.12 225);
+  --accent-foreground: oklch(0.99 0.005 264);
+  --focus-ring: oklch(0.46 0.155 225);
+  --selection: oklch(0.88 0.06 225);
+  --success: oklch(0.45 0.135 145);
+  --success-soft: oklch(0.93 0.04 145);
+  --warning: oklch(0.48 0.13 65);
+  --warning-soft: oklch(0.93 0.04 75);
+  --danger: oklch(0.5 0.185 28);
+  --danger-soft: oklch(0.93 0.045 28);
+  --info: oklch(0.46 0.17 255);
+  --info-soft: oklch(0.93 0.045 255);
+  --on-status: oklch(0.99 0.005 264);
+
+  --neon-cyan: oklch(0.48 0.135 225);
+  --neon-blue: oklch(0.5 0.205 260);
+  --neon-violet: oklch(0.49 0.2 300);
+  --neon-magenta: oklch(0.5 0.205 335);
+  --neon-green: oklch(0.45 0.135 145);
+  --neon-amber: oklch(0.48 0.13 65);
+
+  --scrim: oklch(0.15 0.02 264 / 42%);
+  --shadow-color: oklch(0.2 0.02 264);
+  --shadow-1: 0 1px 2px oklch(0.2 0.02 264 / 12%);
+  --shadow-2: 0 8px 24px oklch(0.2 0.02 264 / 16%);
+  --shadow-3: 0 16px 48px oklch(0.2 0.02 264 / 20%);
+}
+
+:root {
+  /* Typography Scale (shifted up for 16px base / 24px line-height showcase layout) */
+  --font-sans: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+
+  --font-size-xs: 0.8125rem; /* 13px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-md: 1.25rem; /* 20px */
+  --font-size-lg: 1.5rem; /* 24px */
+  --font-size-xl: 2rem; /* 32px */
+  --font-size-2xl: 2.5rem; /* 40px */
+  --font-size-3xl: 3.5rem; /* 56px */
+
+  --line-xs: 1.125rem; /* 18px */
+  --line-sm: 1.25rem; /* 20px */
+  --line-base: 1.5rem; /* 24px */
+  --line-md: 1.75rem; /* 28px */
+  --line-lg: 2rem; /* 32px */
+  --line-xl: 2.5rem; /* 40px */
+  --line-2xl: 3rem; /* 48px */
+  --line-3xl: 4rem; /* 64px */
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --tracking-heading: -0.015em;
+  --tracking-label: 0.04em;
+
+  /* Spacing Scale */
+  --space-0: 0;
+  --space-0-5: 0.125rem;
+  --space-1: 0.25rem;
+  --space-1-5: 0.375rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* Radius Scale */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;
+  --radius-control: 0.375rem; /* 6px */
+  --radius-card: 0.5rem; /* 8px */
+  --radius-dialog: 0.75rem; /* 12px */
+  --radius-pill: 999px;
+
+  /* Sizing and Layout */
+  --control-compact: 2rem;
+  --control-default: 2.25rem;
+  --control-large: 2.5rem;
+  --target-coarse: 2.75rem;
+
+  --icon-sm: 0.875rem;
+  --icon-default: 1rem;
+  --icon-md: 1.25rem;
+  --icon-lg: 1.5rem;
+
+  --header-height: 3.5rem;
+  --content-max: 90rem;
+  --prose-max: 72ch;
+  --page-min-width: 20rem;
+
+  --border-width: 1px;
+  --header-opacity: 92%;
+
+  /* Z-indices */
+  --z-content: 1;
+  --z-header: 40;
+  --z-menu: 60;
+  --z-skip: 100;
+
+  --focus-width: 2px;
+  --focus-offset: 2px;
+  --visually-hidden-clip: 50%;
+
+  /* Durations and Motion */
+  --duration-instant: 0ms;
+  --duration-micro: 80ms;
+  --duration-fast: 140ms;
+  --duration-standard: 200ms;
+  --duration-deliberate: 320ms;
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}

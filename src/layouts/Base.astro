@@ -1,0 +1,92 @@
+---
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Patrick Meenan's Project Playground",
+  description = "A showcase of development tools and projects built by Patrick Meenan, mostly with the help of AI.",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO & Metadata -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <!-- OG image will be added in M4, using placeholder or general one for now -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+
+    <!-- Theme pre-paint resolution script (D-010, D-013) -->
+    <script is:inline>
+      (function () {
+        const key = 'meenan-theme';
+        const preference = localStorage.getItem(key) || 'system';
+        let theme = 'dark';
+        if (preference === 'system') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        } else if (preference === 'light' || preference === 'dark') {
+          theme = preference;
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <Header />
+    
+    <main id="main-content" class="page-shell" tabindex="-1">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p>&copy; {new Date().getFullYear()} Patrick Meenan</p>
+        <p>
+          Licensed under <a href="/LICENSE.txt" class="footer-link">Apache-2.0</a>
+        </p>
+        <p>
+          Built with Astro, by AI agents under human direction.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .footer-link {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+  
+  .footer-link:hover {
+    color: var(--accent);
+  }
+</style>
