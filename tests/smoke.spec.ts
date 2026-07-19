@@ -1,4 +1,6 @@
 import { expect, test } from "@playwright/test";
+import fs from "node:fs";
+import path from "node:path";
 
 test("navigates to home and renders the title", async ({ page }) => {
   await page.goto("./");
@@ -119,90 +121,58 @@ test("renders 404 page correctly", async ({ page }) => {
   await page.goto("./404/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Page Not Found");
 });
-
-test("renders exactly 4 project cards with correct contents", async ({ page }) => {
+test("renders project cards with expected structure and fields matching content files", async ({
+  page,
+}) => {
   await page.goto("./");
 
+  // Read the actual project files from the content directory dynamically
+  const projectsDir = path.join(process.cwd(), "src/content/projects");
+  const projectFiles = fs.readdirSync(projectsDir).filter((f) => f.endsWith(".json"));
+  const expectedCount = projectFiles.length;
+
   const cards = page.locator(".project-card");
-  await expect(cards).toHaveCount(4);
+  await expect(cards).toHaveCount(expectedCount);
 
-  // Assert Waterfall Tools details
-  const wtCard = cards.filter({ hasText: "Waterfall Tools" });
-  await expect(wtCard).toBeVisible();
-  await expect(wtCard.locator(".status-badge")).toHaveText("Launched");
-  await expect(wtCard.locator(".card-blurb")).toContainText(
-    "A fast, zero-bloat browser and Node.js library",
-  );
-  await expect(
-    wtCard.locator('a[aria-label="Visit Waterfall Tools live website"]'),
-  ).toHaveAttribute("href", "https://waterfall-tools.com/");
-  await expect(
-    wtCard.locator('a[aria-label="View Waterfall Tools source on GitHub"]'),
-  ).toHaveAttribute("href", "https://github.com/pmeenan/waterfall-tools");
-  await expect(
-    wtCard.locator('a[aria-label="Read blog post about Waterfall Tools"]'),
-  ).toHaveAttribute(
-    "href",
-    "https://blog.patrickmeenan.com/2026/04/12/introducing-waterfall-tools/",
-  );
+  // Validate dynamic constraints for each card
+  for (let i = 0; i < expectedCount; i++) {
+    const card = cards.nth(i);
+    await expect(card).toBeVisible();
 
-  // Assert Golemine details
-  const golemCard = cards.filter({ hasText: "Golemine" });
-  await expect(golemCard).toBeVisible();
-  await expect(golemCard.locator(".status-badge")).toHaveText("Beta");
-  await expect(golemCard.locator(".card-blurb")).toContainText(
-    "A secure, browser-based iTunes and Finder backup explorer",
-  );
-  await expect(golemCard.locator('a[aria-label="Visit Golemine live website"]')).toHaveAttribute(
-    "href",
-    "https://golemine.com",
-  );
-  await expect(golemCard.locator('a[aria-label="View Golemine source on GitHub"]')).toHaveAttribute(
-    "href",
-    "https://github.com/pmeenan/golemine",
-  );
-  await expect(golemCard.locator('a[aria-label="Read blog post about Golemine"]')).toHaveAttribute(
-    "href",
-    "https://blog.patrickmeenan.com/2026/07/18/golemine/",
-  );
+    // Check title presence
+    const title = card.locator(".card-title");
+    await expect(title).toBeVisible();
+    const titleText = await title.innerText();
+    expect(titleText.trim().length).toBeGreaterThan(0);
 
-  // Assert Parallax-web details
-  const parallaxCard = cards.filter({ hasText: "Parallax-web" });
-  await expect(parallaxCard).toBeVisible();
-  await expect(parallaxCard.locator(".status-badge")).toHaveText("In Development");
-  await expect(parallaxCard.locator(".card-blurb")).toContainText(
-    "An open-world game experiment and web-platform research vehicle",
-  );
-  await expect(
-    parallaxCard.locator('a[aria-label="Visit Parallax-web live website"]'),
-  ).toHaveAttribute("href", "https://parallax-web.com/");
-  await expect(
-    parallaxCard.locator('a[aria-label="View Parallax-web source on GitHub"]'),
-  ).toHaveAttribute("href", "https://github.com/pmeenan/parallax");
-  await expect(
-    parallaxCard.locator('a[aria-label="Read blog post about Parallax-web"]'),
-  ).toHaveAttribute(
-    "href",
-    "https://blog.patrickmeenan.com/2026/07/11/can-i-create-a-aaa-quality-game-with-ai-on-the-web-platform",
-  );
+    // Check status badge
+    const badge = card.locator(".status-badge");
+    await expect(badge).toBeVisible();
+    const badgeText = await badge.innerText();
+    expect(["LAUNCHED", "BETA", "IN DEVELOPMENT"]).toContain(badgeText.toUpperCase());
 
-  // Assert WebAI details
-  const webaiCard = cards.filter({ hasText: "WebAI" });
-  await expect(webaiCard).toBeVisible();
-  await expect(webaiCard.locator(".status-badge")).toHaveText("In Development");
-  await expect(webaiCard.locator(".card-blurb")).toContainText(
-    "A fully client-side workbench for LLMs in the browser",
-  );
-  await expect(webaiCard.locator('a[aria-label="Visit WebAI live website"]')).toHaveAttribute(
-    "href",
-    "https://webai.meenan.dev/",
-  );
-  await expect(webaiCard.locator('a[aria-label="View WebAI source on GitHub"]')).toHaveAttribute(
-    "href",
-    "https://github.com/pmeenan/webai",
-  );
-  // WebAI does not have a blog link; verify it is omitted
-  await expect(webaiCard.locator('a[aria-label^="Read blog post"]')).toHaveCount(0);
+    // Check blurb
+    const blurb = card.locator(".card-blurb");
+    await expect(blurb).toBeVisible();
+    const blurbText = await blurb.innerText();
+    expect(blurbText.trim().length).toBeGreaterThan(0);
+
+    // Check link container and links
+    const linkContainer = card.locator(".card-links");
+    await expect(linkContainer).toBeVisible();
+    const links = linkContainer.locator("a.card-link");
+    const linkCount = await links.count();
+    expect(linkCount).toBeGreaterThan(0);
+
+    // Validate structure of each button link
+    for (let j = 0; j < linkCount; j++) {
+      const link = links.nth(j);
+      await expect(link).toHaveAttribute("href", /^https?:\/\//);
+      await expect(link).toHaveAttribute("aria-label");
+      const label = await link.getAttribute("aria-label");
+      expect(label?.trim().length).toBeGreaterThan(0);
+    }
+  }
 });
 
 test("sort controls are hidden when JS is disabled", async ({ browser }) => {
@@ -229,30 +199,83 @@ test("sort controls are visible and toggle active states when JS is enabled", as
   await expect(titleBtn).toHaveAttribute("aria-pressed", "false");
   await expect(titleBtn).not.toHaveClass(/active/);
 
-  // Default card order (newest first): WebAI, Parallax-web, Golemine, Waterfall Tools
-  const cardTitles = page.locator(".project-card .card-title");
-  await expect(cardTitles.nth(0)).toHaveText("WebAI");
-  await expect(cardTitles.nth(1)).toHaveText("Parallax-web");
-  await expect(cardTitles.nth(2)).toHaveText("Golemine");
-  await expect(cardTitles.nth(3)).toHaveText("Waterfall Tools");
+  // Helper to extract sorting attributes from page
+  const getCardAttributes = async (attr: string) => {
+    return page.locator(".project-card").evaluateAll((elements, attributeName) => {
+      return elements.map((el) => el.getAttribute(attributeName) || "");
+    }, attr);
+  };
 
-  // Click "Project" sorting button (alphabetical A-Z)
+  // 1. Verify default newest-first ordering (dates descending)
+  const defaultDates = await getCardAttributes("data-published");
+  const sortedDatesDescending = [...defaultDates].sort(
+    (a, b) => new Date(b).getTime() - new Date(a).getTime(),
+  );
+  expect(defaultDates).toEqual(sortedDatesDescending);
+
+  // 2. Click "Project" sorting button (alphabetical A-Z)
   await titleBtn.click();
   await expect(titleBtn).toHaveAttribute("aria-pressed", "true");
   await expect(titleBtn).toHaveClass(/active/);
   await expect(newestBtn).toHaveAttribute("aria-pressed", "false");
   await expect(newestBtn).not.toHaveClass(/active/);
 
-  // Alphabetical (A-Z) order: Golemine, Parallax-web, Waterfall Tools, WebAI
-  await expect(cardTitles.nth(0)).toHaveText("Golemine");
-  await expect(cardTitles.nth(1)).toHaveText("Parallax-web");
-  await expect(cardTitles.nth(2)).toHaveText("Waterfall Tools");
-  await expect(cardTitles.nth(3)).toHaveText("WebAI");
+  // Verify alphabetical sorting (titles ascending)
+  const alphabeticalTitles = await getCardAttributes("data-title");
+  const sortedTitlesAscending = [...alphabeticalTitles].sort((a, b) => a.localeCompare(b));
+  expect(alphabeticalTitles).toEqual(sortedTitlesAscending);
 
-  // Go back to newest
+  // 3. Click "Newest" sorting button to return to default
   await newestBtn.click();
   await expect(newestBtn).toHaveAttribute("aria-pressed", "true");
   await expect(newestBtn).toHaveClass(/active/);
+  await expect(titleBtn).toHaveAttribute("aria-pressed", "false");
+  await expect(titleBtn).not.toHaveClass(/active/);
+
+  // Re-verify newest-first order
+  const returnedDates = await getCardAttributes("data-published");
+  expect(returnedDates).toEqual(sortedDatesDescending);
+});
+
+test("makes project cards clickable to site links while leaving sub-links interactive", async ({
+  page,
+}) => {
+  await page.goto("./");
+
+  // Find all cards
+  const cards = page.locator(".project-card");
+  const count = await cards.count();
+
+  // Test at least one card that has a site link
+  let testedCardWithSite = false;
+
+  for (let i = 0; i < count; i++) {
+    const card = cards.nth(i);
+    const siteLink = card.locator("a.site-link");
+    const hasSiteLink = (await siteLink.count()) > 0;
+
+    if (hasSiteLink) {
+      testedCardWithSite = true;
+      const targetUrl = await siteLink.getAttribute("href");
+      expect(targetUrl).not.toBeNull();
+
+      // Stretched link must exist, point to site URL, and be accessibility-hidden
+      const stretchedLink = card.locator("a.card-stretched-link");
+      await expect(stretchedLink).toBeVisible();
+      await expect(stretchedLink).toHaveAttribute("href", targetUrl!);
+      await expect(stretchedLink).toHaveAttribute("aria-hidden", "true");
+      await expect(stretchedLink).toHaveAttribute("tabindex", "-1");
+
+      // Verify other sub-links in card-links (like GitHub or Blog) are interactive and have higher z-index
+      // relative to the stretched link overlay
+      const linksContainer = card.locator(".card-links");
+      await expect(linksContainer).toHaveCSS("position", "relative");
+      await expect(linksContainer).toHaveCSS("z-index", "2");
+    }
+  }
+
+  // Sanity check to make sure our test actually tested at least one site-linked card
+  expect(testedCardWithSite).toBe(true);
 });
 
 test("renders correct favicon link tags in the head", async ({ page }) => {

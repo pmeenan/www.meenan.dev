@@ -36,6 +36,9 @@ const siteFavicon = Object.entries(faviconUrls).find(([path]) =>
 ---
 
 <article class="project-card" data-published={published.toISOString()} data-title={title.toLowerCase()}>
+  {links.site && (
+    <a href={links.site} target="_blank" rel="noopener" class="card-stretched-link" aria-hidden="true" tabindex="-1"></a>
+  )}
   <div class="card-image-wrapper">
     <Image src={image} alt={imageAlt} class="card-image" width={480} height={270} fit="cover" position={imagePosition} />
   </div>
@@ -50,7 +53,7 @@ const siteFavicon = Object.entries(faviconUrls).find(([path]) =>
     
     <div class="card-links">
       {links.site && (
-        <a href={links.site} target="_blank" rel="noopener" class="card-link" aria-label={`Visit ${title} live website`}>
+        <a href={links.site} target="_blank" rel="noopener" class="card-link site-link" aria-label={`Visit ${title} live website`}>
           {siteFavicon && (
             <img src={siteFavicon} class="link-favicon" alt="" aria-hidden="true" width="16" height="16" />
           )}
@@ -82,6 +85,7 @@ const siteFavicon = Object.entries(faviconUrls).find(([path]) =>
 
 <style>
   .project-card {
+    position: relative;
     background: var(--surface);
     border: var(--border-width) solid var(--border);
     border-radius: var(--radius-card);
@@ -102,6 +106,12 @@ const siteFavicon = Object.entries(faviconUrls).find(([path]) =>
     border-color: var(--border-strong);
     transform: translateY(-2px);
     box-shadow: var(--shadow-2);
+  }
+
+  .card-stretched-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
   }
 
   .card-image-wrapper {
@@ -187,6 +197,8 @@ const siteFavicon = Object.entries(faviconUrls).find(([path]) =>
     flex-wrap: wrap;
     gap: var(--space-2);
     margin-block-start: var(--space-2);
+    position: relative;
+    z-index: 2;
   }
 
   .card-link {
@@ -213,6 +225,22 @@ const siteFavicon = Object.entries(faviconUrls).find(([path]) =>
     border-color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  .project-card:hover .site-link {
+    color: var(--accent);
+    background: var(--surface-raised);
+    border-color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Reset the site-link's card hover state when the cursor is over another link in the card */
+  .project-card:has(.card-link:not(.site-link):hover) .site-link {
+    color: var(--text-secondary);
+    background: var(--surface);
+    border-color: var(--border);
+    text-decoration: none;
   }
 
   .link-favicon {
