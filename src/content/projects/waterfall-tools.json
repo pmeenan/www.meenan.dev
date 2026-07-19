@@ -2,7 +2,7 @@
   "title": "Waterfall Tools",
   "published": "2026-04-12",
   "status": "launched",
-  "blurb": "A fast, zero-bloat browser and Node.js library that normalizes various trace formats (PCAP, HAR, Netlog, Chrome Trace) and renders interactive waterfall charts using HTML5 canvas.",
+  "blurb": "A 100% local in-browser tool/component for visualizing network and browser performance data from various input formats (WebPageTest, Netlog, PCAP, HAR, Chrome Trace).",
   "image": "../../assets/projects/waterfall-tools.png",
   "imageAlt": "Interactive network waterfall visualization showing loading sequence",
   "links": {
