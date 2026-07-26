@@ -1,0 +1,12 @@
+{
+  "title": "compdict",
+  "published": "2026-07-26",
+  "status": "launched",
+  "blurb": "CLI and node module for creating and testing Compression-Dictionary-Transport resources (RFC 9842)",
+  "image": "../../assets/projects/compdict.png",
+  "imageAlt": "A cartoon illustration of a visibly frazzled developer debugging a website issue",
+  "links": {
+    "site": "https://www.npmjs.com/package/compdict",
+    "github": "https://github.com/pmeenan/compdict"
+  }
+}
